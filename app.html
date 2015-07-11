@@ -23,7 +23,7 @@
         <div class="die-container">
             <img ng-src="https://cjhooker.github.io/eote-dice-roller-dev/images/{{color}}.png" class="die-button" id="roll{{color}}" alt="{{color}} die"
                  ng-click="clearQty()" ng-if="color!='Numeric'" />
-            <input type="text" class="numeric-die-type" ng-model="numericDieType" ng-if="color=='Numeric'" />
+            <input type="text" class="numeric-die-type" ng-model="$parent.numericDieType" ng-if="color=='Numeric'" />
             <span class="qty-text-box">{{quantity}}</span>
             <div class="arrow-container">
                 <img class="arrow-up" src="https://cjhooker.github.io/eote-dice-roller-dev/images/arrow-up.png" alt="{{color}} +1" ng-click="changeQty(1)" />
