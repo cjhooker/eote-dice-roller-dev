@@ -194,12 +194,12 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
             }
         });
 
-        $scope.displayDebug = function () {
-            var keys = gapi.hangout.data.getKeys();
-            for (var i = 0; i < keys.length; i++) {
-                alert(keys[i] + ": " + gapi.hangout.data.getValue(keys[i]));
-            }
-        }
+        //$scope.displayDebug = function () {
+        //    var keys = gapi.hangout.data.getKeys();
+        //    for (var i = 0; i < keys.length; i++) {
+        //        alert(keys[i] + ": " + gapi.hangout.data.getValue(keys[i]));
+        //    }
+        //}
 
         // After everything is defined, call the init function
         $scope.init();

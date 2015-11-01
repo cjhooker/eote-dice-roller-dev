@@ -112,11 +112,13 @@
             </div>
         </div>
 
+        <!-- Main Content View -->
         <div id="content-main" class="content">
             <div id="outputArea" class="{{imageSize}}">
             </div>
         </div>
 
+        <!-- Settings Content View -->
         <div id="content-settings" class="content ng-hide slide-down-animation" ng-show="showSettings">
             <div id="settings-container">
                 <div id="settings-close" ng-click="showSettings=false">
@@ -137,9 +139,9 @@
                     <a href="https://github.com/cjhooker/eote-dice-roller/issues" target="_blank">Report a bug or request a feature</a>
                 </div>
 
-                <div>
+                <!--<div>
                     <input class="button" type="button" value="DEBUG" id="debugButton" ng-click="displayDebug()" />
-                </div>
+                </div>-->
             </div>
         </div>
 
