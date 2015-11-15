@@ -115,7 +115,7 @@
                         Roll caption: <input type="text" id="rollCaption" ng-model="rollCaption" />
                     </div>
 
-                    <div id="moreButton" ng-click="showMore = !showMore">{{showMore ? "Less" : "More"}}</div>
+                    <div id="moreButton" ng-click="toggleMorePanel()">{{showMore ? "Less" : "More"}}</div>
                 </div>
             </div>
         </div>

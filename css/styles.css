@@ -207,7 +207,7 @@ input[type="checkbox"]:checked + label span {
 }
 #header #morePanel {
   clear: both;
-  height: 45px;
+  height: 25px;
   padding-top: 5;
   padding-right: 2px;
 }
@@ -216,7 +216,7 @@ input[type="checkbox"]:checked + label span {
   width: 190px;
 }
 #header.more-panel-open {
-  height: 315px;
+  height: 295px;
 }
 .content {
   position: absolute;
@@ -341,7 +341,7 @@ input[type="checkbox"]:checked + label span {
   font-size: 1.1em;
 }
 .content.more-panel-open {
-  top: 315px;
+  top: 295px;
 }
 #settings-container {
   padding: 10px;
@@ -360,7 +360,7 @@ input[type="checkbox"]:checked + label span {
 #settings-container #settings-close {
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: 4px;
   cursor: pointer;
 }
 .debugWatermark {
@@ -411,7 +411,7 @@ input[type="checkbox"]:checked + label span {
   top: 265px;
 }
 .slide-down-animation.more-panel-open {
-  top: 315px;
+  top: 295px;
 }
 .slide-down-animation.ng-hide {
   top: 100%;
