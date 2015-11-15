@@ -4,6 +4,7 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
 
         settingService.set("imageSize", "medium");
 
+        $scope.showMore = true;
         $scope.showSettings = false;
 
         $scope.imageSizeOptions = [
@@ -61,7 +62,7 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
             qty += $scope.diceQuantities['Numeric'];
 
             if (qty > 0) {
-                diceService.roll($scope.diceQuantities, $scope.numericDieType);
+                diceService.roll($scope.diceQuantities, $scope.numericDieType, $scope.rollCaption);
 
                 if ($scope.resetAfterRoll) {
                     $scope.resetDiceQuantities();
