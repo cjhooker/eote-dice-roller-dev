@@ -1,5 +1,5 @@
-appModule.controller("appController", ["$scope", "$compile", "diceService", "messageService", "settingService", "playerService",
-    function ($scope, $compile, diceService, messageService, settingService, playerService) {
+appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceService", "messageService", "settingService", "playerService",
+    function ($scope, $compile, $timeout, diceService, messageService, settingService, playerService) {
         var getOutputArea = function () { return angular.element(document.getElementById('outputArea')) };
 
         settingService.set("imageSize", "medium");
@@ -214,8 +214,11 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
                         var participantId = key.split("-")[1];
                         if (participantId == $scope.currentPlayer || participantId == $scope.controlDiceForPlayer) {
                             //var clonedValue = Object.assign({}, stateChangedEvent.addedKeys[i].value);
-                            $scope.diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
-                        }                        
+                            var diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
+                            $timeout(function () {
+                                $scope.diceQuantities = diceQuantities;
+                            });
+                        }
                         break;
                     case "controlDiceForPlayer":
                         var controllingPlayerId = key.split("-")[1];
@@ -226,16 +229,18 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
                             break;
                         }
 
-                        // If the player was controlling your dice, but switched to someone else, remove them from your list
-                        var controllingPlayerIndex = $scope.controlsYourDice.indexOf(controllingPlayerId)
-                        if (controllingPlayerIndex != -1) {
-                            $scope.controlsYourDice.splice(controllingPlayerIndex, 1);
-                        }
+                        $timeout(function () {
+                            // If the player was controlling your dice, but switched to someone else, remove them from your list
+                            var controllingPlayerIndex = $scope.controlsYourDice.indexOf(controllingPlayerId)
+                            if (controllingPlayerIndex != -1) {
+                                $scope.controlsYourDice.splice(controllingPlayerIndex, 1);
+                            }
 
-                        // If the other player is now controlling your dice, add them to your list
-                        if (controlledPlayerId == $scope.currentPlayer) {
-                            $scope.controlsYourDice.push(controllingPlayerId);
-                        }
+                            // If the other player is now controlling your dice, add them to your list
+                            if (controlledPlayerId == $scope.currentPlayer) {
+                                $scope.controlsYourDice.push(controllingPlayerId);
+                            }
+                        });
 
                         break;
                 }
@@ -274,5 +279,5 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
         // After everything is defined, call the init function
         $scope.init();
 
-
+        
     }]);
