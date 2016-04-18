@@ -201,14 +201,19 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                         // A message of any type to display in the main output area
                         // e.g. the results of a die roll
                         var message = JSON.parse(stateChangedEvent.addedKeys[i].value);
-                        $scope.displayMessage(message);
+                        $timeout(function () {
+                            $scope.displayMessage(message);
+                        });
                         break;
                     case "destiny":
                         // The current state of the destiny tracker
-                        $scope.destiny = "";
-                        if (gapi.hangout.data.getValue('destiny')) {
-                            $scope.destiny = gapi.hangout.data.getValue('destiny');
-                        }
+                        var destiny = gapi.hangout.data.getValue('destiny');
+                        $timeout(function () {
+                            $scope.destiny = "";
+                            if (destiny) {
+                                $scope.destiny = destiny;
+                            }
+                        });
                         break;
                     case "diceQuantities":
                         var participantId = key.split("-")[1];
