@@ -8,19 +8,19 @@ appModule.filter("destinyType", [function () {
 appModule.filter("dieName", [function () {
     return function (input) {
         switch (input) {
-            case "G":
+            case "Green":
                 return "Ability";
-            case "Y":
+            case "Yellow":
                 return "Proficiency";
-            case "P":
+            case "Purple":
                 return "Difficulty";
-            case "R":
+            case "Red":
                 return "Challenge";
-            case "B":
+            case "Boost":
                 return "Boost";
-            case "S":
+            case "Setback":
                 return "Setback";
-            case "F":
+            case "Force":
                 return "Force";
         }
         return input;
@@ -72,5 +72,26 @@ appModule.filter("dieResultSummary", ["$filter", function ($filter) {
         if (output == "") { output = "Blank"; }
 
         return output;
+    }
+}]);
+
+appModule.filter("participantArrayToString", ["$filter", function ($filter) {
+    return function (participantIds, showFullList) {
+        if (showFullList) {
+            var participantNames = [];
+            for (var i = 0; i < participantIds.length; i++) {
+                participantNames.push(gapi.hangout.getParticipantById(participantIds[i]).person.displayName);
+            }
+            return participantNames.join(", ");
+        } else {
+            // If there's only one person, show their name, otherwise just show the number of people
+            if (participantIds.length == 0) {
+                return "nobody";
+            } else if (participantIds.length == 1) {
+                return gapi.hangout.getParticipantById(participantIds[0]).person.displayName;
+            } else {
+                return participantIds.length + " people";
+            }
+        }
     }
 }]);

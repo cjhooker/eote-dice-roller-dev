@@ -36,6 +36,11 @@ input.button {
 input.button:hover {
   background: #22A2F6;
 }
+input.button:disabled {
+  background: #BBBBBB;
+  color: #999999;
+  cursor: default;
+}
 ::-webkit-scrollbar {
   width: 13px;
   height: 13px;
@@ -130,6 +135,23 @@ input[type="checkbox"]:checked + label span {
 #header #headerInner #buttonContainer {
   padding: 5px;
 }
+#header #headerInner #buttonContainer #controlDiceForContainer,
+#header #headerInner #buttonContainer #controlsYourDiceContainer {
+  height: 22px;
+}
+#header #headerInner #buttonContainer #controlsYourDiceContainer {
+  margin-bottom: 5px;
+}
+#header #headerInner #buttonContainer #controlDiceFor,
+#header #headerInner #buttonContainer #controlsYourDice {
+  width: 150px;
+  overflow: hidden;
+  float: right;
+  height: 22px;
+}
+#header #headerInner #buttonContainer #controlDiceFor {
+  font-size: .9em;
+}
 #header #headerInner #buttonContainer input.button#resetDiceQuantities {
   width: 110px;
   float: right;
@@ -205,18 +227,17 @@ input[type="checkbox"]:checked + label span {
   color: #1F7FBE;
   cursor: pointer;
 }
-#header #morePanel {
+#header #rollCaptionContainer {
   clear: both;
-  height: 25px;
-  padding-top: 5;
-  padding-right: 2px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-#header #morePanel #rollCaption {
+#header #rollCaptionContainer #rollCaption {
   float: right;
   width: 190px;
 }
 #header.more-panel-open {
-  height: 295px;
+  height: 430px;
 }
 .content {
   position: absolute;
@@ -341,7 +362,7 @@ input[type="checkbox"]:checked + label span {
   font-size: 1.1em;
 }
 .content.more-panel-open {
-  top: 295px;
+  top: 430px;
 }
 #settings-container {
   padding: 10px;
@@ -411,7 +432,7 @@ input[type="checkbox"]:checked + label span {
   top: 265px;
 }
 .slide-down-animation.more-panel-open {
-  top: 295px;
+  top: 430px;
 }
 .slide-down-animation.ng-hide {
   top: 100%;
