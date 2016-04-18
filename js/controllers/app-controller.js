@@ -213,9 +213,8 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
                     case "diceQuantities":
                         var participantId = key.split("-")[1];
                         if (participantId == $scope.currentPlayer || participantId == $scope.controlDiceForPlayer) {
-                            var clonedValue = Object.assign({}, stateChangedEvent.addedKeys[i].value);
-                            highlightChangedValues()
-                            $scope.diceQuantities = clonedValue;
+                            //var clonedValue = Object.assign({}, stateChangedEvent.addedKeys[i].value);
+                            $scope.diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
                         }                        
                         break;
                     case "controlDiceForPlayer":
@@ -260,7 +259,7 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
         // we can transmit the change. Also if anyone else is controlling your dice, transmit the change.
         $scope.$watch("diceQuantities", function (newValue, oldValue) {
             if ($scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0) {
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer, newValue);
+                gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer, JSON.stringify(newValue));
             }
         }, true);
 
@@ -268,7 +267,7 @@ appModule.controller("appController", ["$scope", "$compile", "diceService", "mes
         // so they have them.
         $scope.$watchCollection("controlsYourDice", function (newValue, oldValue) {
             if (newValue.length > 0) {
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.currentPlayer, $scope.diceQuantities);
+                gapi.hangout.data.setValue("diceQuantities-" + $scope.currentPlayer, JSON.stringify($scope.diceQuantities));
             }
         });
 

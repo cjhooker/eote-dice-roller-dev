@@ -23,7 +23,7 @@
                     tempDiceQuantities[prop] = $scope.diceQuantities[prop] + 1;
                 }
             }
-            gapi.hangout.data.setValue("diceQuantities-1234", tempDiceQuantities);
+            gapi.hangout.data.setValue("diceQuantities-1234", JSON.stringify(tempDiceQuantities));
         }
 
         $scope.fakeLeiaChangesDice = function () {
@@ -33,27 +33,24 @@
                     tempDiceQuantities[prop] = $scope.diceQuantities[prop] + 2;
                 }
             }
-            gapi.hangout.data.setValue("diceQuantities-1234", tempDiceQuantities);
+            gapi.hangout.data.setValue("diceQuantities-1234", JSON.stringify(tempDiceQuantities));
+        }
+        
+        var seeDice = function (participantId) {
+            var output = "";
+            var diceQuantities = JSON.parse(gapi.hangout.data.getValue("diceQuantities-" + participantId));
+            for (var prop in diceQuantities) {
+                if ($scope.diceQuantities.hasOwnProperty(prop)) {
+                    output += prop + ": " + diceQuantities[prop] + "\r\n";
+                }
+            }
+            alert(output);
         }
 
         $scope.fakeSeeHansDice = function () {
-            var output = "";
-            var diceQuantities = gapi.hangout.data.getValue("diceQuantities-1");
-            for (var prop in diceQuantities) {
-                if ($scope.diceQuantities.hasOwnProperty(prop)) {
-                    output += prop + ": " + diceQuantities[prop] + "\r\n";
-                }
-            }
-            alert(output);
+            seeDice(1);
         }
 
         $scope.fakeSeeLeiasDice = function () {
-            var output = "";
-            var diceQuantities = gapi.hangout.data.getValue("diceQuantities-2");
-            for (var prop in diceQuantities) {
-                if ($scope.diceQuantities.hasOwnProperty(prop)) {
-                    output += prop + ": " + diceQuantities[prop] + "\r\n";
-                }
-            }
-            alert(output);
+            seeDice(2);
         }

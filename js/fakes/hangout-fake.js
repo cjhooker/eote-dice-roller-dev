@@ -24,11 +24,12 @@ var gapi = {
 			},
 			setValue: function (key, value) {
 			    var valueToSet;
-			    if (typeof value === 'object') {
-			        valueToSet = Object.assign({}, value);
-			    } else {
-			        valueToSet = value;
-			    }
+			    //if (typeof value === 'object') {
+			    //    valueToSet = Object.assign({}, value);
+			    //} else {
+			    //    valueToSet = value;
+			    //}
+			    valueToSet = value;
 				_data[key] = valueToSet;
 				_stateChangedFunction({ addedKeys: [{ key: key, value: valueToSet }] });
 
@@ -38,9 +39,9 @@ var gapi = {
 				if (keyFirstPart == "controlDiceForPlayer") {
 				    var controlledPlayerId = value;
 				    if (controlledPlayerId != participant.id) {
-				        var diceQuantities = gapi.hangout.data.getValue("diceQuantities-" + controlledPlayerId);
+				        var diceQuantities = JSON.parse(gapi.hangout.data.getValue("diceQuantities-" + controlledPlayerId));
 				        if (diceQuantities != undefined) {
-				            gapi.hangout.data.setValue("diceQuantities-" + controlledPlayerId, diceQuantities);
+				            gapi.hangout.data.setValue("diceQuantities-" + controlledPlayerId, JSON.stringify(diceQuantities));
 				        }
 				    }
 				}
@@ -123,7 +124,7 @@ var getEmptyDiceQuantities = function () {
 };
 
 gapi.hangout.data.setValue("messages", JSON.stringify(new Array()))
-gapi.hangout.data.setValue("diceQuantities-1", getEmptyDiceQuantities())
-gapi.hangout.data.setValue("diceQuantities-2", getEmptyDiceQuantities())
+gapi.hangout.data.setValue("diceQuantities-1", JSON.stringify(getEmptyDiceQuantities()))
+gapi.hangout.data.setValue("diceQuantities-2", JSON.stringify(getEmptyDiceQuantities()))
 
 
