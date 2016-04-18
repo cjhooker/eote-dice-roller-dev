@@ -218,10 +218,10 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                     case "diceQuantities":
                         var participantId = key.split("-")[1];
                         if (participantId == $scope.currentPlayer || participantId == $scope.controlDiceForPlayer) {
-                            //var clonedValue = Object.assign({}, stateChangedEvent.addedKeys[i].value);
                             var diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
                             $timeout(function () {
                                 $scope.diceQuantities = diceQuantities;
+                                console.log('received diceQuantities');
                             });
                         }
                         break;
@@ -270,6 +270,7 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
         $scope.$watch("diceQuantities", function (newValue, oldValue) {
             if ($scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0) {
                 gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer, JSON.stringify(newValue));
+                console.log('sent diceQuantities-' + $scope.controlDiceForPlayer);
             }
         }, true);
 
