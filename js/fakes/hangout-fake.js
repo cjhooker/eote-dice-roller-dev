@@ -64,6 +64,9 @@ var gapi = {
 		},
 		getEnabledParticipants: function () {
 		    return enabledParticipants;
+		},
+		onEnabledParticipantsChanged: {
+            add: function(func) {}
 		}
 	}
 };

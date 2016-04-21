@@ -197,6 +197,10 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
             }
         }
 
+        gapi.hangout.onEnabledParticipantsChanged.add(function (enabledParticipantsChangedEvent) {
+            $scope.playerList = playerService.getPlayerList();
+        });
+
         gapi.hangout.data.onStateChanged.add(function (stateChangedEvent) {
             // Loop through all the keys that were added to the shared state
             for (var i = 0; i < stateChangedEvent.addedKeys.length; i++) {
