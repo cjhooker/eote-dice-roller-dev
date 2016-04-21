@@ -48,6 +48,14 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                 $scope.diceQuantities[color] = 0;
             }
             $scope.diceQuantities['Numeric'] = 0;
+
+            // Note that this is here rather than just a $watch to avoid an infinite loop of sending and receiving notifications
+            // when another player changes the quantity.
+            if ($scope.shouldSendDiceQuantityNotifications()) {
+                gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer,
+                    JSON.stringify($scope.diceQuantities));
+                console.log('sent from resetDiceQuantities diceQuantities-' + $scope.controlDiceForPlayer);
+            }
         }
 
         $scope.resetSymbolQuantites = function () {
