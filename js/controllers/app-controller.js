@@ -198,7 +198,7 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
         }
 
         gapi.hangout.onEnabledParticipantsChanged.add(function (enabledParticipantsChangedEvent) {
-            $scope.playerList = playerService.getPlayerList();
+            $scope.playerList = enabledParticipantsChangedEvent.enabledParticipants;
         });
 
         gapi.hangout.data.onStateChanged.add(function (stateChangedEvent) {
