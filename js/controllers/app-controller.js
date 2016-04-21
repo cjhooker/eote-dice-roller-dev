@@ -265,14 +265,10 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
             gapi.hangout.data.setValue("controlDiceForPlayer-" + $scope.currentPlayer, newValue);
         });
 
-        // Watch the diceQuantities so that if the user is controlling another's dice,
-        // we can transmit the change. Also if anyone else is controlling your dice, transmit the change.
-        $scope.$watch("diceQuantities", function (newValue, oldValue) {
-            if ($scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0) {
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer, JSON.stringify(newValue));
-                console.log('sent diceQuantities-' + $scope.controlDiceForPlayer);
-            }
-        }, true);
+        // Whether we should notify other players when we change dice quantities
+        $scope.shouldSendDiceQuantityNotifications = function () {
+            return $scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0;
+        };
 
         // Whenever the list of people controlling your dice changes, you need to transmit your list of diceQuantities
         // so they have them.
