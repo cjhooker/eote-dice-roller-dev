@@ -49,13 +49,9 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
             }
             $scope.diceQuantities['Numeric'] = 0;
 
-            // Note that this is here rather than just a $watch to avoid an infinite loop of sending and receiving notifications
-            // when another player changes the quantity.
-            if ($scope.shouldSendDiceQuantityNotifications()) {
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.controlDiceForPlayer,
-                    JSON.stringify($scope.diceQuantities));
-                console.log('sent from resetDiceQuantities diceQuantities-' + $scope.controlDiceForPlayer);
-            }
+            // Note that this is here rather than just a $watch to avoid sending a notification in response to receiving
+            // a notification when another player changes your quantity.
+            playerService.setDiceForPlayer($scope.controlDiceForPlayer, $scope.diceQuantities);
         }
 
         $scope.resetSymbolQuantites = function () {
@@ -277,33 +273,26 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
         $scope.$watch("controlDiceForPlayer", function (newValue, oldValue) {
             gapi.hangout.data.setValue("controlDiceForPlayer-" + $scope.currentPlayer, newValue);
             if (newValue == $scope.currentPlayer) {
-                // If switching back to your own dice, get the values from the hangout data if they are there,
-                // otherwise reset them.
-                var diceQuantities = gapi.hangout.data.getValue("diceQuantities-" + $scope.currentPlayer);
-                if (diceQuantities == undefined) {
-                    $scope.resetDiceQuantities();
-                } else {
-                    $scope.diceQuantities = JSON.parse(gapi.hangout.data.getValue("diceQuantities-" + $scope.currentPlayer));
-                }
+                // If switching back to your own dice, get the values of your dice
+                $scope.diceQuantities = playerService.getDiceForPlayer($scope.currentPlayer);
             } else {
-                // If taking control of someone else, we also need to send the current player's dice quantities
-                // so the value is stored
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.currentPlayer, JSON.stringify($scope.diceQuantities));
+                // If taking control of someone else, we also need to send our dice quantities so the value is stored
+                playerService.setDiceForPlayer($scope.currentPlayer, $scope.diceQuantities);
             }
         });
 
-        // Whether we should notify other players when we change dice quantities
-        $scope.shouldSendDiceQuantityNotifications = function () {
-            return $scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0;
-        };
+        // // Whether we should notify other players when we change dice quantities
+        // $scope.shouldSendDiceQuantityNotifications = function () {
+        //     return $scope.controlDiceForPlayer != $scope.currentPlayer || $scope.controlsYourDice.length > 0;
+        // };
 
-        // Whenever the list of people controlling your dice changes, you need to transmit your list of diceQuantities
-        // so they have them.
-        $scope.$watchCollection("controlsYourDice", function (newValue, oldValue) {
-            if (newValue.length > 0) {
-                gapi.hangout.data.setValue("diceQuantities-" + $scope.currentPlayer, JSON.stringify($scope.diceQuantities));
-            }
-        });
+        // // Whenever the list of people controlling your dice changes, you need to transmit your list of diceQuantities
+        // // so they have them.
+        // $scope.$watchCollection("controlsYourDice", function (newValue, oldValue) {
+        //     if (newValue.length > 0) {
+        //         gapi.hangout.data.setValue("diceQuantities-" + $scope.currentPlayer, JSON.stringify($scope.diceQuantities));
+        //     }
+        // });
 
         // After everything is defined, call the init function
         $scope.init();

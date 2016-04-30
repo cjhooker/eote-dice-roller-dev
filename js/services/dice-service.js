@@ -53,6 +53,15 @@ appModule.service("diceService", ["messageService", function (messageService) {
         }
     }
 
+    this.getEmptyDiceQuantities = function () {
+        var diceQuantities = {};
+        for (var color in this.dice) {
+            diceQuantities[color] = 0;
+        }
+        dice['Numeric'] = 0;
+        return diceQuantities;
+    }
+
     /***** Private Methods *****/
 
     // Randomly return the value for one side of the given Star Wars die
