@@ -194,10 +194,13 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
         }
 
         gapi.hangout.onEnabledParticipantsChanged.add(function (enabledParticipantsChangedEvent) {
+            debugLog("enabledParticipants changed");
             $scope.playerList = enabledParticipantsChangedEvent.enabledParticipants;
         });
 
         gapi.hangout.data.onStateChanged.add(function (stateChangedEvent) {
+            // debugLog(JSON.stringify(stateChangedEvent));
+
             // Loop through all the keys that were added to the shared state
             for (var i = 0; i < stateChangedEvent.addedKeys.length; i++) {
                 var key = stateChangedEvent.addedKeys[i].key;
@@ -224,17 +227,23 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                         });
                         break;
                     case "diceQuantities":
+                        // Don't bother processing updates that are from yourself
+                        if (stateChangedEvent.metadata.lastWriter == $scope.currentPlayer) return;
+
                         var participantId = key.split("-")[1];
+                        debugLog("received diceQuantities for " + participantId);
                         // Only update the dice UI if the update is for the dice you are currently controlling
                         if (participantId == $scope.controlDiceForPlayer) {
                             var diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
                             $timeout(function () {
                                 $scope.diceQuantities = diceQuantities;
-                                console.log('received diceQuantities');
                             });
                         }
                         break;
                     case "controlDiceForPlayer":
+                        // Don't bother processing updates that are from yourself
+                        if (stateChangedEvent.metadata.lastWriter == $scope.currentPlayer) return;
+                        
                         var controllingPlayerId = key.split("-")[1];
                         var controlledPlayerId = stateChangedEvent.addedKeys[i].value;
 

@@ -9,10 +9,12 @@ appModule.service("playerService", ["messageService", "diceService", function (m
     }
 
     this.setDiceForPlayer = function (playerId, diceQuantities) {
+        debugLog("setDiceForPlayer " + playerId);
         gapi.hangout.data.setValue("diceQuantities-" + playerId, JSON.stringify(diceQuantities));
     }
 
     this.getDiceForPlayer = function (playerId) {
+        debugLog("getDiceForPlayer " + playerId);
         var diceQuantities = gapi.hangout.data.getValue("diceQuantities-" + playerId);
         if (diceQuantities == undefined) {
             return diceService.getEmptyDiceQuantities();

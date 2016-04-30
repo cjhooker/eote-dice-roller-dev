@@ -2,6 +2,7 @@
 
 var _data = new Object();
 var _stateChangedFunction = function() {};
+var _lastWriter = 0;
 
 var gadgets = {
 	util: {
@@ -31,8 +32,9 @@ var gapi = {
 			    //}
 			    valueToSet = value;
 				_data[key] = valueToSet;
-				_stateChangedFunction({ addedKeys: [{ key: key, value: valueToSet }] });
-
+				_stateChangedFunction({ addedKeys: [{ key: key, value: valueToSet }], metadata: {lastWriter: _lastWriter} });
+				_lastWriter = participant.id;
+				
 			    // Need to re-transmit diceQuantities when you take control to simulate what happens
 				// in app-controller for the other player.
 				var keyFirstPart = key.split("-")[0];
@@ -67,6 +69,11 @@ var gapi = {
 		},
 		onEnabledParticipantsChanged: {
             add: function(func) {}
+		},
+		fake: {
+			setLastWriter: function (id) {
+				_lastWriter = id;
+			}
 		}
 	}
 };
@@ -129,5 +136,4 @@ var getEmptyDiceQuantities = function () {
 gapi.hangout.data.setValue("messages", JSON.stringify(new Array()))
 gapi.hangout.data.setValue("diceQuantities-1", JSON.stringify(getEmptyDiceQuantities()))
 gapi.hangout.data.setValue("diceQuantities-2", JSON.stringify(getEmptyDiceQuantities()))
-
-
+_lastWriter = participant.id;

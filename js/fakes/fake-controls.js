@@ -19,12 +19,14 @@
         $scope.fakeHanChangesDice = function () {
             var diceQuantities = playerService.getDiceForPlayer(1234);
             diceQuantities["Green"] += 1;
+            gapi.hangout.fake.setLastWriter(1);
             playerService.setDiceForPlayer(1234, diceQuantities);
         }
 
         $scope.fakeLeiaChangesDice = function () {
             var diceQuantities = playerService.getDiceForPlayer(1234);
             diceQuantities["Purple"] += 1;
+            gapi.hangout.fake.setLastWriter(2);
             playerService.setDiceForPlayer(1234, diceQuantities);
         }
 
