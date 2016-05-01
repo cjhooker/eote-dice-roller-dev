@@ -277,14 +277,12 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
         //    }
         //}
 
-        // Watch controlDiceForPlayer so that if the user takes control of another's dice,
-        // the other player is made aware of the change.
         $scope.$watch("controlDiceForPlayer", function (newValue, oldValue) {
+            // Make sure the other players are made aware of the change
             gapi.hangout.data.setValue("controlDiceForPlayer-" + $scope.currentPlayer, newValue);
-            if (newValue == $scope.currentPlayer) {
-                // If switching back to your own dice, get the values of your dice
-                $scope.diceQuantities = playerService.getDiceForPlayer($scope.currentPlayer);
-            } else {
+            // Get the dice that you are controlling
+            $scope.diceQuantities = playerService.getDiceForPlayer(newValue);
+            if (newValue != $scope.currentPlayer) {
                 // If taking control of someone else, we also need to send our dice quantities so the value is stored
                 playerService.setDiceForPlayer($scope.currentPlayer, $scope.diceQuantities);
             }
