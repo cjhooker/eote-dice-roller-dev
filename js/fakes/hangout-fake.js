@@ -32,9 +32,13 @@ var gapi = {
 			    //}
 			    valueToSet = value;
 				_data[key] = valueToSet;
-				_stateChangedFunction({ addedKeys: [{ key: key, value: valueToSet }], metadata: {lastWriter: _lastWriter} });
-				_lastWriter = participant.id;
 				
+				var metadata = {};
+				metadata[key] = {lastWriter: _lastWriter};
+
+				_stateChangedFunction({ addedKeys: [{ key: key, value: valueToSet }], metadata: metadata });
+				_lastWriter = participant.id;
+
 			    // Need to re-transmit diceQuantities when you take control to simulate what happens
 				// in app-controller for the other player.
 				var keyFirstPart = key.split("-")[0];

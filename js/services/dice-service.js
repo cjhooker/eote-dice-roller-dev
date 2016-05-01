@@ -58,7 +58,7 @@ appModule.service("diceService", ["messageService", function (messageService) {
         for (var color in this.dice) {
             diceQuantities[color] = 0;
         }
-        dice['Numeric'] = 0;
+        diceQuantities['Numeric'] = 0;
         return diceQuantities;
     }
 

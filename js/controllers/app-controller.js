@@ -228,7 +228,7 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                         break;
                     case "diceQuantities":
                         // Don't bother processing updates that are from yourself
-                        if (stateChangedEvent.metadata.lastWriter == $scope.currentPlayer) return;
+                        if (stateChangedEvent.metadata[key].lastWriter == $scope.currentPlayer) return;
 
                         var participantId = key.split("-")[1];
                         debugLog("received diceQuantities for " + participantId);
@@ -242,8 +242,8 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                         break;
                     case "controlDiceForPlayer":
                         // Don't bother processing updates that are from yourself
-                        if (stateChangedEvent.metadata.lastWriter == $scope.currentPlayer) return;
-                        
+                        if (stateChangedEvent.metadata[key].lastWriter == $scope.currentPlayer) return;
+
                         var controllingPlayerId = key.split("-")[1];
                         var controlledPlayerId = stateChangedEvent.addedKeys[i].value;
 
