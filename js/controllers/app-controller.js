@@ -1,5 +1,6 @@
-appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceService", "messageService", "settingService", "playerService",
-    function ($scope, $compile, $timeout, diceService, messageService, settingService, playerService) {
+appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceService",
+    "messageService", "settingService", "playerService", "hangoutService",
+    function ($scope, $compile, $timeout, diceService, messageService, settingService, playerService, hangoutService) {
         var getOutputArea = function () { return angular.element(document.getElementById('outputArea')) };
 
         settingService.set("imageSize", "medium");
@@ -38,7 +39,7 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
             $scope.resetAfterRoll = false;
 
             // Set the dice quantities when the app first loads
-            $scope.diceQuantities = {};
+            $scope.diceQuantities = new DiceQuantities();
             $scope.resetDiceQuantities();
             $scope.numericDieType = 100;
         }
@@ -193,12 +194,12 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
             }
         }
 
-        gapi.hangout.onEnabledParticipantsChanged.add(function (enabledParticipantsChangedEvent) {
+        hangoutService.onEnabledParticipantsChanged(function (enabledParticipantsChangedEvent) {
             debugLog("enabledParticipants changed");
             $scope.playerList = enabledParticipantsChangedEvent.enabledParticipants;
         });
 
-        gapi.hangout.data.onStateChanged.add(function (stateChangedEvent) {
+        hangoutService.data.onStateChanged(function (stateChangedEvent) {
             // debugLog(JSON.stringify(stateChangedEvent));
 
             // Loop through all the keys that were added to the shared state
@@ -231,7 +232,7 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
                         if (stateChangedEvent.metadata[key].lastWriter == $scope.currentPlayer) return;
 
                         var participantId = key.split("-")[1];
-                        debugLog("received diceQuantities for " + participantId);
+                        debugLog("received diceQuantities for " + playerService.getPlayer(participantId).name);
                         // Only update the dice UI if the update is for the dice you are currently controlling
                         if (participantId == $scope.controlDiceForPlayer) {
                             var diceQuantities = JSON.parse(stateChangedEvent.addedKeys[i].value);
@@ -279,13 +280,15 @@ appModule.controller("appController", ["$scope", "$compile", "$timeout", "diceSe
 
         $scope.$watch("controlDiceForPlayer", function (newValue, oldValue) {
             // Make sure the other players are made aware of the change
-            gapi.hangout.data.setValue("controlDiceForPlayer-" + $scope.currentPlayer, newValue);
-            // Get the dice that you are controlling
-            $scope.diceQuantities = playerService.getDiceForPlayer(newValue);
+            hangoutService.data.setValue("controlDiceForPlayer-" + $scope.currentPlayer, newValue);
+
             if (newValue != $scope.currentPlayer) {
                 // If taking control of someone else, we also need to send our dice quantities so the value is stored
                 playerService.setDiceForPlayer($scope.currentPlayer, $scope.diceQuantities);
             }
+
+            // Get the dice that you are controlling
+            $scope.diceQuantities = playerService.getDiceForPlayer(newValue);
         });
 
         // // Whether we should notify other players when we change dice quantities

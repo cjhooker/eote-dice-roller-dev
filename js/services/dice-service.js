@@ -54,12 +54,7 @@ appModule.service("diceService", ["messageService", function (messageService) {
     }
 
     this.getEmptyDiceQuantities = function () {
-        var diceQuantities = {};
-        for (var color in this.dice) {
-            diceQuantities[color] = 0;
-        }
-        diceQuantities['Numeric'] = 0;
-        return diceQuantities;
+        return new DiceQuantities();
     }
 
     /***** Private Methods *****/
@@ -121,3 +116,20 @@ appModule.service("diceService", ["messageService", function (messageService) {
         return result;
     }
 }]);
+
+function DiceQuantities() {
+    this["Green"] = 0;
+    this["Yellow"] = 0;
+    this["Purple"] = 0;
+    this["Red"] = 0;
+    this["Boost"] = 0;
+    this["Setback"] = 0;
+    this["Force"] = 0;
+    this["Success"] = 0;
+    this["Advantage"] = 0;
+    this["Triumph"] = 0;
+    this["Failure"] = 0;
+    this["Threat"] = 0;
+    this["Despair"] = 0;
+    this["Numeric"] = 0;
+}
